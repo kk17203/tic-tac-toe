@@ -1,0 +1,17 @@
+html, body {
+    height: 100%;
+}
+.gameboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 300px;
+    width: 300px;
+    margin: 15px;
+}
+.square {
+    border: 1px solid black;
+    /* display: grid; */
+    /* width: 25px;
+    height: 25px; */
+}
