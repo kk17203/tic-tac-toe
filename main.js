@@ -1,17 +1,22 @@
-function openForm() {
-    document.querySelector(".form-popup").style.display = "flex";
-};
-function closeForm() {
-    document.querySelector(".form-popup").style.display = "none";
-};
-
-
-
+// formController module handles functions related to form
+const formController = (() => {
+    function openForm() {
+        document.querySelector(".form-popup").style.display = "flex";
+    };
+    function closeForm() {
+        document.querySelector(".form-popup").style.display = "none";
+    };
+    return {
+        openForm,
+        closeForm,
+    }
+})();
 
 //displayController handles the messages sent to 'div' class message in HTML
 const displayController = (() => {
     const renderMessage = (message) => {
         document.querySelector(".message").textContent = message;
+        document.querySelector(".message").style.display = 'block';
     }
     return {
         renderMessage,
@@ -78,8 +83,6 @@ const Game = (() => {
     let players = [];
     // Allows us to know which player is currently playing
     let currentPlayerIndex;
-    // want to know when game is over
-    let gameOver;
 
     // Handles game start functions 
     const start = () => {
@@ -89,8 +92,6 @@ const Game = (() => {
             createPlayer(document.querySelector("#player2").value, "O"),
         ]
         currentPlayerIndex = 0;
-        gameOver = false;
-        // call Gameboard.render module.
         Gameboard.render();
     }
     
@@ -111,11 +112,9 @@ const Game = (() => {
         Gameboard.update(index, players[currentPlayerIndex].mark)
         
         if(checkForWin(Gameboard.getGameboard())) {
-            gameOver = true;
             displayController.renderMessage(`${players[currentPlayerIndex].name} Won!`);
         }
         if(checkForTie(Gameboard.getGameboard())) {
-            gameOver = true;
             displayController.renderMessage('Tie Game!');
         }
 
@@ -135,6 +134,7 @@ const Game = (() => {
     Gameboard.removeBoard();
     currentPlayerIndex = 0;
     displayController.renderMessage("");
+    document.querySelector(".message").style.display = 'none';
     }
     
     return {
@@ -172,17 +172,18 @@ function checkForWin(board) {
     }
 }
 
-const startButton = document.querySelector("#start-button");
-startButton.addEventListener('click', ()=> {
+const submitButton = document.querySelector("#submit-button");
+submitButton.addEventListener('click', ()=> {
+    event.preventDefault();
     Game.start();
-    closeForm();
+    formController.closeForm();
 });
 const resetButton = document.querySelector("#reset-button");
 resetButton.addEventListener('click', ()=> {
     Game.restart();
-    openForm();
+    formController.openForm();
 });
-const openFormButton = document.querySelector("#open-form");
-openFormButton.addEventListener('click', ()=> {
-    openForm();
+const startButton = document.querySelector("#start-button");
+startButton.addEventListener('click', ()=> {
+    formController.openForm();
 });

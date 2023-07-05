@@ -10,16 +10,22 @@
 <body>
     <h1>Tic Tac Toe</h1>
     <div class="controls">
-        <button id="open-form">Start</button>
+        <button id="start-button">Start</button>
         <button id="reset-button">Reset</button>
     </div>
     <div class="gameboard"></div>
     <div class="form-popup">
-        <div class="form-container">
-            <input type="text" id="player1" placeholder="Player One Name">
-            <input type="text" id="player2" placeholder="Player Two Name">
-            <button id="start-button">Submit</button>
-        </div>
+        <form action="" class="form-container">
+            <div>
+                <label for="player1">Player 1 (X)</label>
+                <input type="text" id="player1" placeholder="Player One Name">
+            </div>
+            <div>
+                <label for="player2">Player 2 (O)</label>
+                <input type="text" id="player2" placeholder="Player Two Name">
+            </div>
+            <button id="submit-button">Submit</button>
+        </form>
     </div>
     <div class="message"></div>
 </body>
