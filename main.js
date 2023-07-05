@@ -26,10 +26,14 @@ const Gameboard = (() => {
         render();
     }
 
+    //used to access gameboard indirectly so we don't modify it 
+    const getGameboard = () => gameboard;
+
     //You need to return items you want accessible outside Gameboard.
     return {
         render,
         update,
+        getGameboard,
     }
 })();
 
@@ -67,10 +71,16 @@ const Game = (() => {
         console.log(event);
         // use split function to split the id (square-#) at the '-'. We don't care about the square part of the id currently, Just which box index was clicked. split function gives an array, then we select [1] to focus on the square number(index). Since the id is a string, we use parseInt to turn the string into an interval
         let index = parseInt(event.target.id.split("-")[1]);
+
+        //if statement to see if gameboard slot already has something in it at the given index. If it does, the function returns early, skipping the subsequent code.
+        if(Gameboard.getGameboard()[index] !== "") {
+            return;
+        };
+        
         console.log(`Square Index: ${index}`);
         console.log(`Current Player Index: ${currentPlayerIndex}`);
         Gameboard.update(index, players[currentPlayerIndex].mark)
-
+        
         // changes currentPlayerIndex after each turn. If cPI === 0 then it assigns new value 1. if not 0 then it assigns 0.
         currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
     }
