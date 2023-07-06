@@ -130,9 +130,17 @@ const Game = (() => {
     const player2 = document.querySelector("#player2");
     player1.value = "";
     player2.value = "";
-    players =['',''];
     Gameboard.removeBoard();
     currentPlayerIndex = 0;
+    displayController.renderMessage("");
+    document.querySelector(".message").style.display = 'none';
+    }
+
+    const rematch = () => {
+        for (let i = 0; i < 9; i++) {
+            Gameboard.update(i, "");
+        }
+    currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
     displayController.renderMessage("");
     document.querySelector(".message").style.display = 'none';
     }
@@ -141,6 +149,7 @@ const Game = (() => {
         start,
         handleClick, 
         restart,
+        rematch,
     }
 
 })( );
@@ -186,4 +195,8 @@ resetButton.addEventListener('click', ()=> {
 const startButton = document.querySelector("#start-button");
 startButton.addEventListener('click', ()=> {
     formController.openForm();
+});
+const rematchButton = document.querySelector('#rematch');
+rematchButton.addEventListener('click', ()=> {
+    Game.rematch();
 });
