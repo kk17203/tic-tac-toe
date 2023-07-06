@@ -1,5 +1,4 @@
-// formController module handles functions related to form
-const formController = (() => {
+const formController = (() => { // handles functions related to form
     function openForm() {
         document.querySelector(".form-popup").style.display = "flex";
     };
@@ -12,8 +11,7 @@ const formController = (() => {
     }
 })();
 
-//displayController handles the messages sent to 'div' class message in HTML
-const displayController = (() => {
+const displayController = (() => { // handles messages sent to 'div.message' in HTML
     const renderMessage = (message) => {
         document.querySelector(".message").textContent = message;
         document.querySelector(".message").style.display = 'block';
@@ -24,42 +22,32 @@ const displayController = (() => {
 })();
 
 const Gameboard = (() => {
-    // Array to store gameboard
-    let gameboard = ["", "", "", "", "", "", "", "", ""]
+    let gameboard = ["", "", "", "", "", "", "", "", ""] // stores gameboard content
 
-    // 'render' function renders the gameboard UI
-    const render = () => {
+    const render = () => { // renders the gameboard to UI
         let boardHTML = "";
-        gameboard.forEach((square, index) => {
-            // Each section of array creates a div with class 'square'. Each square gets uniqe id based on index. The context of each array element is used for textcontext of each div (X or O).
+        gameboard.forEach((square, index) => { //Each section of array creates a div with class 'square', assigns uniqe id based on index. The context of each array element is used for textcontext of each div (X or O or "").
             boardHTML += `<div class="square" id="square-${index}">${square}</div>`
         })
-        //put each one of the created div's in the gamebaord (assigning the HTML not just text context). Next line needs to be included in curly brackets of 'render' for boardHTML to be accessible(because of scope)
-        document.querySelector(".gameboard").innerHTML = boardHTML;
+        document.querySelector(".gameboard").innerHTML = boardHTML; //put each one of the created div's in the gamebaord (assigning the HTML not just text context)
+
         const squares = document.querySelectorAll(".square");
-        // attach an eventListener to each square
-        squares.forEach((square) => {
+        squares.forEach((square) => { // attach eventListener to each square
             square.addEventListener("click", Game.handleClick);
             })
     }
 
-    // 'update' function updates the 'gameboard' array & UI after each move
-    //update the gamebaord. handleClick is giving us the arg for this 'update' function. First arg (index), handleClick gives us the index of the square we clicked. Second arg (value), handleClick gives us the value of the current players mark. 
-    const update = (index, value) => {
-        // next line assigns the value given from handleClick(mark) to the gameboard index value given from handleClick. This updates the gamboard array.
-        gameboard[index] = value;
-        // re run render() to show updated array values in UI
-        render();
+    const update = (index, value) => { // updates the 'gameboard' array & UI after each move. 'handleClick() gives us the arguements
+        gameboard[index] = value; // updates the 'gameboard' array. handleClick gives it the value to assign to certain index
+        render(); // re-render to show updated array in UI
     }
 
     const removeBoard = () => {
         document.querySelector(".gameboard").innerHTML = "";
     }
 
-    //used to access gameboard indirectly so we don't modify it 
-    const getGameboard = () => gameboard;
+    const getGameboard = () => gameboard; //used to access gameboard indeirectly so we don't modify it
 
-    //You need to return items you want accessible outside Gameboard.
     return {
         render,
         update,
@@ -68,26 +56,20 @@ const Gameboard = (() => {
     }
 })();
 
-// FactoryFunction to create players
-const createPlayer = (name, mark) => {
+const createPlayer = (name, mark) => { //FactoryFunction to create players
     return {
         name, 
         mark,
     }
 }
 
-//'Game' module handles the logic for the game
-const Game = (() => {
+const Game = (() => { //handles the logic for the game
     // next 3 variables just declare them. Set the contents under 'start'
-    // Keep track of players
-    let players = [];
-    // Allows us to know which player is currently playing
-    let currentPlayerIndex;
+    let players = []; //array to keep track of created players
+    let currentPlayerIndex; //allows us to know which players turn it is
 
-    // Handles game start functions 
-    const start = () => {
-        // Calls on 'createPlayer' FactoryFunction to make array
-        players = [
+    const start = () => { //handles game start process
+        players = [ //calls on 'createPlayer' to make player array
             createPlayer(document.querySelector("#player1").value, "X"),
             createPlayer(document.querySelector("#player2").value, "O"),
         ]
@@ -96,13 +78,10 @@ const Game = (() => {
     }
     
     const handleClick = (event) => {
-        // You can console.log the event to see different useful information about the event (see: target. This is where our unique id in boardHTML becomes useful)
-        console.log(event);
-        // use split function to split the id (square-#) at the '-'. We don't care about the square part of the id currently, Just which box index was clicked. split function gives an array, then we select [1] to focus on the square number(index). Since the id is a string, we use parseInt to turn the string into an interval
-        let index = parseInt(event.target.id.split("-")[1]);
+        console.log(event); // You can console.log the event to see different useful information about it (see: target. This is where our unique id in boardHTML becomes useful)
+        let index = parseInt(event.target.id.split("-")[1]); //.split splits the id (square-#) at the '-' into an array. Don't need the pre-dash. Just index. Then we select[1] (focus on square number index. id is a string so use parseInt to turn into interval.
 
-        //if statement to see if gameboard slot already has something in it at the given index. If it does, the function returns early, skipping the subsequent code.
-        if(Gameboard.getGameboard()[index] !== "") {
+        if(Gameboard.getGameboard()[index] !== "") { //checks if gameboard slot at given index has content. If true handleClick ends. Skipping subsequent code
             return;
         };
         
@@ -118,8 +97,7 @@ const Game = (() => {
             displayController.renderMessage('Tie Game!');
         }
 
-        // changes currentPlayerIndex after each turn. If cPI === 0 then it assigns new value 1. if not 0 then it assigns 0.
-        currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
+        currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0; // changes currentPlayerIndex after each turn. If cPI === 0 then it assigns new value 1. if not 0 then it assigns 0
     }
 
     const restart = () => {
@@ -155,8 +133,7 @@ const Game = (() => {
 })( );
 
 function checkForTie(board) {
-    //Checks to see if EVERY cell is empty. If so returns true
-    return board.every(cell => cell !=="")
+    return board.every(cell => cell !=="") //Checks to see if EVERY cell is empty. If so returns true
 }
 
 function checkForWin(board) {
@@ -171,11 +148,8 @@ function checkForWin(board) {
         [2, 4, 6],
     ]
     for(let i = 0; i < winningCombinations.length; i++) {
-        // Next line is short hand. It links the current winning combinations array with a, b, c.
-        // for example winningCombinations[2] a=6, b=7, c=8.
-        const [a, b, c] = winningCombinations[i];
-        //board[a] checks to make sure it atleast has a value. Then the rest checks to see if the board matches a winningCombination
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        const [a, b, c] = winningCombinations[i]; //short hand. Links current winning combinations array w/ a, b, c. (winningCombinations[2] a=6,b=7,c=8)
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) { //board[a] makes sure it has a value. Rest checks if the board matches a winningCombination
             return true;
         }
     }
