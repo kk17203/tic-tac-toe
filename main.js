@@ -90,12 +90,11 @@ const Game = (() => { //handles the logic for the game
 
         Gameboard.update(index, players[currentPlayerIndex].mark)
         
-        if(checkForWin(Gameboard.getGameboard())) {
-            displayController.renderMessage(`${players[currentPlayerIndex].name} Won!`);
-        }
-        if(checkForTie(Gameboard.getGameboard())) {
-            displayController.renderMessage('Tie Game!');
-        }
+        if (checkForWin(Gameboard.getGameboard())) {
+            displayController.renderMessage(`${players[currentPlayerIndex].name} Won!`)
+        } else if (checkForTie(Gameboard.getGameboard())) {
+            displayController.renderMessage('Tie Game!')
+        };
 
         currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0; // changes currentPlayerIndex after each turn. If cPI === 0 then it assigns new value 1. if not 0 then it assigns 0
     }
