@@ -70,8 +70,8 @@ const Game = (() => { //handles the logic for the game
 
     const start = () => { //handles game start process
         players = [ //calls on 'createPlayer' to make player array
-            createPlayer(document.querySelector("#player1").value, "X"),
-            createPlayer(document.querySelector("#player2").value, "O"),
+            createPlayer(document.querySelector("#player1").value, "O"),
+            createPlayer(document.querySelector("#player2").value, "X"),
         ]
         currentPlayerIndex = 0;
         Gameboard.render();
